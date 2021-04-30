@@ -6,39 +6,33 @@ import (
 )
 
 type precoAcao struct {
-	acao     string
-	data     string
-	precoret float64
+	acao, data string
+	precoret   float64
 }
 
 type rendimentoAcao struct {
-	dataLucro  string
-	rendimento float64
+	dataLucro         string
+	precoAtual, lucro float64
 }
 
 func main() {
-	var a precoAcao
-	a.acao = "AAAA0"
-	a.data = "14/04/2020"
-	a.precoret = 23.49
 
-	fmt.Println(a.acao, a.data, a.precoret)
+	//COMPRA DA AÇÃO
+	compraAcao := precoAcao{"AAAA4", "05/04/2020", 22.99}
+	fmt.Println("Ação:", compraAcao.acao, "\nData da compra:", compraAcao.data, "\nPreço da Ação: R$", compraAcao.precoret)
 
-	var r1 rendimentoAcao
-	r1.dataLucro = "05/10/2020"
-	r1.rendimento = 24.79
+	//CONTAGEM LUCRO PRIMEIRA DATA
+	contLucro1 := rendimentoAcao{"05/10/2020", 24.19, 0}
+	contLucro1.lucro = contLucro1.precoAtual - compraAcao.precoret
+	fmt.Println("Lucro da data", contLucro1.dataLucro, "é de: R$", math.Round(contLucro1.lucro*100)/100)
 
-	lucro1 := r1.rendimento - a.precoret
-	fmt.Println(math.Round(lucro1*100) / 100)
+	//CONTAGEM LUCRO SEGUNDA DATA
+	contLucro2 := rendimentoAcao{"05/04/2021", 25.74, 0}
+	contLucro2.lucro = contLucro2.precoAtual - contLucro1.lucro - compraAcao.precoret
+	fmt.Println("Lucro da data", contLucro2.dataLucro, "é de: R$", math.Round(contLucro2.lucro*100)/100)
 
-	var r2 rendimentoAcao
-	r2.dataLucro = "05/04/2021"
-	r2.rendimento = 25.74
-
-	lucro2 := r2.rendimento - a.precoret
-	fmt.Println(math.Round(lucro2*100) / 100)
-
-	retornoAnual := lucro2 + lucro1
-	fmt.Println(math.Round(retornoAnual*100) / 100)
+	//CONTADEM DO LUCRO ANUAL
+	retornoAnual := contLucro2.lucro + contLucro1.lucro
+	fmt.Println("Lucro anual é de: R$", retornoAnual)
 
 }
